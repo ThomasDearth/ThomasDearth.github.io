@@ -1,11 +1,17 @@
 //Setup
 /* @pjs preload="resources/background/boardBackground.png"*/
 /* @pjs preload="resources/tiles/tile1.png"*/
+/* @pjs preload="resources/tiles/tile2.png"*/
+/* @pjs preload="resources/tiles/tile3.png"*/
+/* @pjs preload="resources/tiles/tileVoltorb.png"*/
 
 var boardBackground = loadImage("resources/background/boardBackground.png");
 boardBackground.width *= boardScale;
 boardBackground.height *= boardScale;
 var tile1 = loadImage("resources/tiles/tile1.png");
+var tile2 = loadImage("resources/tiles/tile2.png");
+var tile3 = loadImage("resources/tiles/tile3.png");
+var tileVoltorb = loadImage("resources/tiles/tileVoltorb.png");
 width = boardBackground.width;
 height = boardBackground.height;
 
@@ -17,8 +23,8 @@ mouseClicked = function() {
   //Draws tiles where the mouse is clicked
   //TODO: fix drawing when selections are made between tiles
   var tileSelected = getSelectedTile();
-  if(tileSelected.x !== null & tileSelected.y !== null) {
-    image(tile1,
+  if(!(tileSelected.row === null | tileSelected.column === null)) {
+    image(getTileImage(tileSelected.row, tileSelected.column),
       gridCoords.xOffset + 64 * tileSelected.column,
       gridCoords.yOffset + 64 * tileSelected.row,
       2 * tile1.width, 2 * tile1.height);
@@ -46,3 +52,21 @@ var getSelectedTile = function() {
   }
   return coords;
 }
+
+var getTileImage = function(row, column) {
+  var tileScore = tiles[row][column].score;
+  switch (tileScore) {
+    case 1:
+      return tile1;
+      break;
+    case 2:
+      return tile2;
+      break;
+    case 3:
+      return tile3;
+      break;
+    default:
+      return tileVoltorb;
+      break;
+  }
+};
