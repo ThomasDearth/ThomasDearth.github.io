@@ -13,7 +13,7 @@ var newTile = function(score) {
 var initializeTiles = function() {
   tiles = [[], [], [], [], []];
 
-  var info = getLevelContents(1);
+  var info = getLevelContents(level.number);
   var score = Math.pow(2, info[0]) * Math.pow(3, info[1]);
 
   //Create 2s
