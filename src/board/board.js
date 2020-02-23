@@ -1,14 +1,6 @@
 //Variable storing the logical components of the board.
 var tiles = [[], [], [], [], []];
 
-var newTile = function(score) {
-  var ret = {
-    score: score,
-    flipped: false
-  }
-  return ret;
-};
-
 //Initialize the empty board
 var initializeTiles = function() {
   tiles = [[], [], [], [], []];
@@ -21,7 +13,7 @@ var initializeTiles = function() {
     var randColumn = Math.floor(5 * Math.random());
     var randRow = Math.floor(5 * Math.random());
     if(tiles[randRow][randColumn] === undefined) {
-      tiles[randRow][randColumn] = newTile(2);
+      tiles[randRow][randColumn] = new Tile(2);
       info[0]--;
     }
   }
@@ -31,7 +23,7 @@ var initializeTiles = function() {
     var randColumn = Math.floor(5 * Math.random());
     var randRow = Math.floor(5 * Math.random());
     if(tiles[randRow][randColumn] === undefined) {
-      tiles[randRow][randColumn] = newTile(3);
+      tiles[randRow][randColumn] = new Tile(3);
       info[1]--;
     }
   }
@@ -41,7 +33,7 @@ var initializeTiles = function() {
     var randColumn = Math.floor(5 * Math.random());
     var randRow = Math.floor(5 * Math.random());
     if(tiles[randRow][randColumn] === undefined) {
-      tiles[randRow][randColumn] = newTile(0);
+      tiles[randRow][randColumn] = new Tile(0);
       info[2]--;
     }
   }
@@ -50,12 +42,10 @@ var initializeTiles = function() {
   for(var row = 0; row < gridCoords.rows; row++) {
     for(var col = 0; col < gridCoords.columns; col++) {
       if(tiles[row][col] === undefined) {
-        tiles[row][col] = newTile(1);
+        tiles[row][col] = new Tile(1);
       }
     }
   }
 
   return score;
 }
-
-var score = initializeTiles();

@@ -14,6 +14,9 @@ var tile1, tile2, tile3, tileVoltorb;
 /*States: false: normal behavior
           true: awaiting click, do not refresh board or interact with tiles*/
 var waitingForClick = false;
+/*States: false: on click, continue normally
+          true: on click, restart*/
+var waitingForRestart = false;
 
 setup = function() {
   boardBackground = loadImage("resources/background/boardBackground.png");
@@ -33,13 +36,18 @@ setup = function() {
   image(boardBackground, 0, 0,
     boardScale * boardBackground.width, boardScale * boardBackground.height);
 
-  initializeTiles();
+  level.scoreMax = initializeTiles();
 }
 
 mouseClicked = function() {
   if(waitingForClick) {
     waitingForClick = false;
-    setup();
+    if(waitingForRestart) {
+      waitingForRestart = false;
+      setup();
+    } else {
+      //TODO: refresh the board
+    }
     return;
   }
 
@@ -56,8 +64,9 @@ mouseClicked = function() {
   if(tileSelected.score === 0) {
     lose();
   }
+  //TODO: fix for when score is 0 or when score increases
   if(tileSelected.score === 2 | tileSelected.score === 3) {
-    writeTextbox("x" + tileSelected.score + "! Recieved _ Coins!")
+    writeTextbox("x" + tileSelected.score + "! Recieved " + "_" + " Coins!")
   }
 }
 
@@ -120,5 +129,6 @@ var lose = function() {
     level.failCount = 0;
   }
 
+  waitingForRestart = true;
   writeTextbox("Oh no! You get 0 Coins!");
 }
