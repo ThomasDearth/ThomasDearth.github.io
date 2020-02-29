@@ -4,7 +4,7 @@ var boardScale = 2;
 
 var gridCoords = {
   xOffset: 22,
-  yOffset: 20,
+  yOffset: 432,
   rows: 5,
   columns: 5
 }

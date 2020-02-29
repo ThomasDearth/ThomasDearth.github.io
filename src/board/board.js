@@ -49,3 +49,35 @@ var initializeTiles = function() {
 
   return score;
 }
+
+var getRowInfo = function(selectedRow) {
+  let rowPoints = 0;
+  let rowVoltorbs = 0;
+  for(let i = 0; i < gridCoords.columns; i++) {
+    rowPoints += tiles[selectedRow][i].score;
+    if(tiles[selectedRow][i].score === 0) {
+      rowVoltorbs++;
+    }
+  }
+  let ret = {
+    points: rowPoints,
+    voltorbs: rowVoltorbs
+  };
+  return ret;
+};
+
+var getColumnInfo = function(selectedColumn) {
+  let columnPoints = 0;
+  let columnVoltorbs = 0;
+  for(let i = 0; i < gridCoords.rows; i++) {
+    columnPoints += tiles[i][selectedColumn].score;
+    if(tiles[i][selectedColumn].score === 0) {
+      columnVoltorbs++;
+    }
+  }
+  let ret = {
+    points: columnPoints,
+    voltorbs: columnVoltorbs
+  };
+  return ret;
+}

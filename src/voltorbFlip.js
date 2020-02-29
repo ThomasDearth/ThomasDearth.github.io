@@ -1,12 +1,5 @@
 //Image Preloading
-/* @pjs preload="resources/background/boardBackground.png"*/
-/* @pjs preload="resources/background/topBackground.png"*/
-/* @pjs preload="resources/text/textbox.png"*/
-/* @pjs preload="resources/tiles/tile1.png"*/
-/* @pjs preload="resources/tiles/tile2.png"*/
-/* @pjs preload="resources/tiles/tile3.png"*/
-/* @pjs preload="resources/tiles/tileVoltorb.png"*/
-
+/* @pjs preload="resources/background/boardBackground.png,resources/background/boardTopBackground.png,resources/text/textbox.png,resources/tiles/tile1.png,resources/tiles/tile2.png,resources/tiles/tile3.png,resources/tiles/tileVoltorb.png"*/
 var boardBackground, topBackground;
 var textbox;
 var tile1, tile2, tile3, tileVoltorb;
@@ -18,27 +11,66 @@ var waitingForClick = false;
           true: on click, restart*/
 var waitingForRestart = false;
 
+/*First-time setup on loading the page*/
 setup = function() {
+  loadImages();
+  width = 275 * boardScale;
+  height = 206 * 2 * boardScale;
+
+  var timerRender = setTimeout(newBoard, 100);
+}
+
+/*Preloads images into variables*/
+var loadImages = function() {
   boardBackground = loadImage("resources/background/boardBackground.png");
+  boardTopBackground = loadImage("resources/background/boardTopBackground.PNG");
   textbox = loadImage("resources/text/textbox.png");
   tile1 = loadImage("resources/tiles/tile1.png");
   tile2 = loadImage("resources/tiles/tile2.png");
   tile3 = loadImage("resources/tiles/tile3.png");
   tileVoltorb = loadImage("resources/tiles/tileVoltorb.png");
-  width = boardBackground.width * boardScale;
-  height = boardBackground.height * boardScale;
-  // height = 1000;
-
-  if(waitingForClick) {
-    return;
-  }
-
-  image(boardBackground, 0, 0,
-    boardScale * boardBackground.width, boardScale * boardBackground.height);
-
-  level.scoreMax = initializeTiles();
 }
 
+/*Loads an empty image of a board and creates a new board.*/
+var newBoard = function() {
+  level.scoreMax = initializeTiles();
+  image(boardTopBackground, 0, 0,
+    boardScale * boardBackground.width, boardScale * boardBackground.height);
+  image(boardBackground, 0, height/2,
+    boardScale * boardBackground.width, boardScale * boardBackground.height);
+  displayRowInfo();
+  displayColumnInfo();
+}
+
+/*Loads totals of rows onto the board*/
+var displayRowInfo = function() {
+  fill(0, 0, 0);
+  for(let i = 0; i < gridCoords.rows; i++) {
+    let rowInfo = getRowInfo(i);
+    if(rowInfo.points > 9) {
+      text(rowInfo.points, 372, 445 + 64 * i);
+    } else {
+      text(rowInfo.points, 379, 445 + 64 * i);
+    }
+    text(rowInfo.voltorbs, 379, 470 + 64 * i);
+  }
+}
+
+/*Loads totals of columns onto the board*/
+var displayColumnInfo = function() {
+  fill(0, 0, 0);
+  for(let i = 0; i < gridCoords.columns; i++) {
+    let columnInfo = getColumnInfo(i);
+    if(columnInfo.points > 9) {
+      text(columnInfo.points, gridCoords.xOffset + 31 + 64 * i, 765);
+    } else {
+      text(columnInfo.points, gridCoords.xOffset + 37 + 64 * i, 765);
+    }
+    text(columnInfo.voltorbs, gridCoords.xOffset + 37 + 64 * i, 789);
+  }
+}
+
+//Defines behavior on mouse click. Overrides function in processing.js.
 mouseClicked = function() {
   if(waitingForClick) {
     waitingForClick = false;
@@ -64,9 +96,12 @@ mouseClicked = function() {
   if(tileSelected.score === 0) {
     lose();
   }
-  //TODO: fix for when score is 0 or when score increases
-  if(tileSelected.score === 2 | tileSelected.score === 3) {
-    writeTextbox("x" + tileSelected.score + "! Recieved " + "_" + " Coins!")
+
+  //TODO: fix for when score increases
+  if(level.currentScore === 0) {
+    writeTextbox("x" + tileSelected.score + "! Recieved " + level.currentScore + " Coins!");
+  } else if(tileSelected.score === 2 | tileSelected.score === 3) {
+    writeTextbox("x" + tileSelected.score + "! Recieved " + level.currentScore + " Coins!")
   }
 }
 
@@ -109,7 +144,7 @@ var getTileImage = function(row, column) {
       return tileVoltorb;
       break;
   }
-};
+}
 
 //Creates a textbox on the screen with the specified text.
 var writeTextbox = function(message) {
@@ -119,7 +154,7 @@ var writeTextbox = function(message) {
     width - 10 * boardScale, textbox.height * boardScale / 2);
   fill(0, 0, 0);
   text(message, 20 * boardScale, height - (textbox.height - 16) * boardScale / 2);
-};
+}
 
 //Behavior upon selecting a voltorb.
 var lose = function() {
