@@ -112,6 +112,9 @@ mouseClicked = function() {
   //Draws tiles where the mouse is clicked.
   var tileSelectedCoords = getSelectedTile();
   var tileSelected = tiles[tileSelectedCoords.row][tileSelectedCoords.column];
+  if(tileSelected === undefined) {
+    return;
+  }
   if(tileSelected.flipped) {
     return;
   }
