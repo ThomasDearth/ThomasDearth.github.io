@@ -15,8 +15,11 @@ var tile1, tile2, tile3, tileVoltorb;
           true: awaiting click, do not refresh board or interact with tiles*/
 var waitingForClick = false;
 /*States: false: on click, continue normally
-          true: on click, restart*/
+          true: on click, reveal board and wait for confirmation click*/
 var waitingForRestart = false;
+/*States: false: normal behavior
+          true: on click, restart*/
+var waitingForConfirm = false;
 
 /*First-time setup on loading the page*/
 setup = function() {
@@ -83,11 +86,21 @@ var displayColumnInfo = function() {
 mouseClicked = function() {
   if(waitingForClick) {
     waitingForClick = false;
-    if(waitingForRestart) {
+    if(waitingForRestart) {             //First post-voltorb click
       waitingForRestart = false;
+      waitingForConfirm = true;
+      waitingForClick = true;
+      revealBoard();
+      //Hide the textbox
+      image(boardBackgroundBottom, 0, 740,
+        boardBackgroundBottom.width * 2,
+        boardBackgroundBottom.height * 2);
+      displayColumnInfo();
+    } else if(waitingForConfirm) {    //Second post-voltorb click
+      waitingForConfirm = false;
       newBoard();
-    } else {
-      //TODO: refresh the board
+    } else {                          //Non-voltorb click
+      //Remove the textbox
       image(boardBackgroundBottom, 0, 740,
         boardBackgroundBottom.width * 2,
         boardBackgroundBottom.height * 2);
@@ -161,6 +174,17 @@ var getTileImage = function(row, column) {
     default:
       return tileVoltorb;
       break;
+  }
+}
+
+var revealBoard = function() {
+  for(let row = 0; row < gridCoords.rows; row++) {
+    for(let column = 0; column < gridCoords.columns; column++) {
+      image(getTileImage(row, column),
+        gridCoords.xOffset + 64 * column,
+        gridCoords.yOffset + 64 * row,
+        boardScale * tile1.width, boardScale * tile1.height);
+    }
   }
 }
 
