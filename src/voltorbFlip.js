@@ -1,6 +1,13 @@
 //Image Preloading
-/* @pjs preload="resources/background/boardBackground.png,resources/background/boardTopBackground.png,resources/text/textbox.png,resources/tiles/tile1.png,resources/tiles/tile2.png,resources/tiles/tile3.png,resources/tiles/tileVoltorb.png"*/
-var boardBackground, topBackground;
+/* @pjs preload="resources/background/boardBackground.png,
+                 resources/background/boardBackgroundBottom.png,
+                 resources/background/boardTopBackground.png,
+                 resources/text/textbox.png,
+                 resources/tiles/tile1.png,
+                 resources/tiles/tile2.png,
+                 resources/tiles/tile3.png,
+                 resources/tiles/tileVoltorb.png"*/
+var boardBackground, boardBackgroundBottom, boardTopBackground;
 var textbox;
 var tile1, tile2, tile3, tileVoltorb;
 
@@ -17,12 +24,13 @@ setup = function() {
   width = 275 * boardScale;
   height = 206 * 2 * boardScale;
 
-  var timerRender = setTimeout(newBoard, 100);
+  var timerRender = setTimeout(newBoard, 200);
 }
 
 /*Preloads images into variables*/
 var loadImages = function() {
   boardBackground = loadImage("resources/background/boardBackground.png");
+  boardBackgroundBottom = loadImage("resources/background/boardBackgroundBottom.png");
   boardTopBackground = loadImage("resources/background/boardTopBackground.PNG");
   textbox = loadImage("resources/text/textbox.png");
   tile1 = loadImage("resources/tiles/tile1.png");
@@ -33,6 +41,7 @@ var loadImages = function() {
 
 /*Loads an empty image of a board and creates a new board.*/
 var newBoard = function() {
+  level.currentScore = 0;
   level.scoreMax = initializeTiles();
   image(boardTopBackground, 0, 0,
     boardScale * boardBackground.width, boardScale * boardBackground.height);
@@ -76,9 +85,13 @@ mouseClicked = function() {
     waitingForClick = false;
     if(waitingForRestart) {
       waitingForRestart = false;
-      setup();
+      newBoard();
     } else {
       //TODO: refresh the board
+      image(boardBackgroundBottom, 0, 740,
+        boardBackgroundBottom.width * 2,
+        boardBackgroundBottom.height * 2);
+      displayColumnInfo();
     }
     return;
   }
@@ -86,6 +99,9 @@ mouseClicked = function() {
   //Draws tiles where the mouse is clicked.
   var tileSelectedCoords = getSelectedTile();
   var tileSelected = tiles[tileSelectedCoords.row][tileSelectedCoords.column];
+  if(tileSelected.flipped) {
+    return;
+  }
   if(!(tileSelectedCoords.row === null | tileSelectedCoords.column === null)) {
     image(getTileImage(tileSelectedCoords.row, tileSelectedCoords.column),
       gridCoords.xOffset + 64 * tileSelectedCoords.column,
@@ -99,8 +115,10 @@ mouseClicked = function() {
 
   //TODO: fix for when score increases
   if(level.currentScore === 0) {
+    level.currentScore = tileSelected.score;
     writeTextbox("x" + tileSelected.score + "! Recieved " + level.currentScore + " Coins!");
   } else if(tileSelected.score === 2 | tileSelected.score === 3) {
+    level.currentScore *= tileSelected.score;
     writeTextbox("x" + tileSelected.score + "! Recieved " + level.currentScore + " Coins!")
   }
 }
