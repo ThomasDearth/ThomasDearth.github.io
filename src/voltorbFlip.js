@@ -11,6 +11,7 @@ var boardBackground, boardBackgroundBottom, boardTopBackground;
 var textbox;
 var tile1, tile2, tile3, tileVoltorb;
 
+//These all should have been a FSM
 /*States: false: normal behavior
           true: awaiting click, do not refresh board or interact with tiles*/
 var waitingForClick = false;
@@ -84,7 +85,7 @@ var displayColumnInfo = function() {
 
 //Defines behavior on mouse click. Overrides function in processing.js.
 mouseClicked = function() {
-  if(waitingForClick) {
+  if(waitingForClick) {                 //Textbox handling
     waitingForClick = false;
     if(waitingForRestart) {             //First post-voltorb click
       waitingForRestart = false;
@@ -136,6 +137,10 @@ mouseClicked = function() {
   } else if(tileSelected.score === 2 | tileSelected.score === 3) {
     level.currentScore *= tileSelected.score;
     writeTextbox("x" + tileSelected.score + "! Recieved " + level.currentScore + " Coins!")
+  }
+
+  if(level.scoreMax === level.currentScore) {
+    win();
   }
 }
 
@@ -201,6 +206,17 @@ var writeTextbox = function(message) {
   text(message, 20 * boardScale, height - (textbox.height - 16) * boardScale / 2);
 }
 
+//Behavior upon completing a level.
+var win = function() {
+  level.failCount = 0;
+  level.number++;
+  level.totalCoins += level.currentScore;
+
+  waitingForRestart = true;
+  writeTextbox("Game clear! You recieved " + level.currentScore +
+  " Coins! Advanced to level " + level.number + "!");
+}
+
 //Behavior upon selecting a voltorb.
 var lose = function() {
   level.failCount++;
@@ -210,5 +226,9 @@ var lose = function() {
   }
 
   waitingForRestart = true;
-  writeTextbox("Oh no! You get 0 Coins!");
+  if(level.failCount === 0) {
+    writeTextbox("Fell to level 1.");
+  } else {
+    writeTextbox("Oh no! You get 0 Coins!");
+  }
 }
