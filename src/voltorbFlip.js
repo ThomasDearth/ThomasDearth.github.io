@@ -1,7 +1,7 @@
 //Image Preloading
 /* @pjs preload="resources/background/boardBackground.png,
                  resources/background/boardBackgroundBottom.png,
-                 resources/background/boardTopBackground.png,
+                 resources/background/boardBackgroundTop.png,
                  resources/text/textbox.png,
                  resources/tiles/tile1.png,
                  resources/tiles/tile2.png,
@@ -35,7 +35,7 @@ setup = function() {
 var loadImages = function() {
   boardBackground = loadImage("resources/background/boardBackground.png");
   boardBackgroundBottom = loadImage("resources/background/boardBackgroundBottom.png");
-  boardTopBackground = loadImage("resources/background/boardTopBackground.PNG");
+  boardTopBackground = loadImage("resources/background/boardBackgroundTop.PNG");
   textbox = loadImage("resources/text/textbox.png");
   tile1 = loadImage("resources/tiles/tile1.png");
   tile2 = loadImage("resources/tiles/tile2.png");
