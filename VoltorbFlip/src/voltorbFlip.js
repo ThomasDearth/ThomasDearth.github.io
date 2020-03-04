@@ -24,11 +24,13 @@ var waitingForConfirm = false;
 
 /*First-time setup on loading the page*/
 setup = function() {
+  var music = document.getElementById("music");
+  music.volume = 0.25;
   loadImages();
   width = 275 * boardScale;
   height = 206 * 2 * boardScale;
 
-  var timerRender = setTimeout(newBoard, 200);
+  var timerRender = setTimeout(newBoard, 50);
 }
 
 /*Preloads images into variables*/
