@@ -1,0 +1,11 @@
+body {
+  background-color: #00825e;
+}
+h1, h2 {
+  color: #EEE;
+  text-align: center;
+}
+#game {
+  max-width: 550px;
+  margin: auto;
+}

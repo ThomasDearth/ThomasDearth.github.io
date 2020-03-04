@@ -1,0 +1,12 @@
+body {
+  background-color: #44a;
+}
+
+h1, h2, h3, p, a {
+  color: #ccc;
+}
+
+#games {
+  background-color: #484;
+  max-width: 50%;
+}
