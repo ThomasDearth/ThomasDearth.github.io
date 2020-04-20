@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/Amazon/index.css">
+    <title>Amazon Checker</title>
+  </head>
+  <body>
+    <script type="text/javascript">
+      function confirmYes() {
+        result = confirm("Are you sure?");
+        if(result) {
+          window.location.assign("https://www.amazon.com/");
+        }
+      }
+    </script>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h1>Is it essential to buy what you're thinking of?</h1>
+    <a href="#" onclick="confirmYes()" class="green">Yes</a>
+    <a href="no.html" class="red">No</a>
+  </body>
+</html>
