@@ -7,6 +7,7 @@
                  resources/tiles/tile2.png,
                  resources/tiles/tile3.png,
                  resources/tiles/tileVoltorb.png"*/
+/* @pjs transparent="true"; */
 var boardBackground, boardBackgroundBottom, boardTopBackground;
 var textbox;
 var tile1, tile2, tile3, tileVoltorb;

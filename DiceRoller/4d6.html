@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Dice Roller</title>
+  </head>
+  <body>
+    <h1>Dice Roller</h1>
+    <h2>4d6, drop the lowest</h2>
+    <button type="button" name="roll" onclick="rollScores()">Generate</button>
+    <p id="gen1"></p>
+    <p id="gen2"></p>
+    <p id="gen3"></p>
+    <p id="gen4"></p>
+    <p id="gen5"></p>
+    <p id="gen6"></p>
+    <p id="sum"></p>
+
+    <script type="text/javascript">
+      function rollScores() {
+        var finalScores = [];
+        for (var x = 1; x <= 6; x++) {
+          var gen = document.getElementById("gen" + x);
+          var set = makeSet();
+          var score = set[1] + set[2] + set[3];
+          finalScores.push(score);
+          gen.innerHTML = "Score " + x + ": " + set + " Dropped: " + set[0] + " Sum: " + score;
+        }
+        document.getElementById("sum").innerHTML = "Final Scores: " + finalScores.sort();
+      }
+      function makeSet() {
+        var arr = [Math.round(5 * Math.random() + 1),
+          Math.round(6 * Math.random() + 1),
+          Math.round(6 * Math.random() + 1),
+          Math.round(6 * Math.random() + 1)];
+        return arr.sort();
+      }
+    </script>
+  </body>
+</html>
